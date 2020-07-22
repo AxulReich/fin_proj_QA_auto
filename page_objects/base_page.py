@@ -100,7 +100,9 @@ class BasePage():
 
 if __name__ == "__main__":
     from selenium import webdriver
+    from selenium.webdriver.common.by import By
     browser = webdriver.Chrome()
     bp = BasePage(driver=browser)
     bp.open()
+    print(bp.is_element_present((By.CSS_SELECTOR, "#login_link")))
 
