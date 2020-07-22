@@ -9,6 +9,7 @@ from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
 from constants import BASE_URL, EXPLICIT_WAIT
+from page_objects.main_page_locators import MainPageLocators as MPL
 
 Logger = getLogger(__name__)
 
@@ -19,7 +20,7 @@ class BasePage():
 
     def __init__(self, driver: WebDriver):
         """
-        :param browser: from conftest.py
+        :param driver: from conftest.py
         """
         self._driver = driver
         # self.url = url
@@ -39,6 +40,13 @@ class BasePage():
             self._driver.get(url)
         # self._browser.get(self.url)
 
+    def login_link_exist(self) -> bool:
+        """
+        because every page have login or register link
+        :return:
+        """
+        return self.is_element_present(*MPL.login_link)
+
     def is_element_present(self, locator: tuple) -> bool:
         """
         method for check if element is present
@@ -46,11 +54,7 @@ class BasePage():
                         xpath - (By.XPATH, xpath locator)
         :return: True / False
         """
-        try:
-            self._driver.find_element(*locator)
-        except NoSuchElementException:
-            return False
-        return True
+        return self._driver.find_elements(*locator) > 0
 
     def find_element(self, locator: tuple) -> WebElement:
         """

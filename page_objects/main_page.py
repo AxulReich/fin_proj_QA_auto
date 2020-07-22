@@ -12,8 +12,6 @@ class MainPage(BasePage):
     def enter_or_reister(self):
         self.find_element(MPL.login_link).click()
 
-    def login_link_exist(self) -> bool:
-        return self.is_element_present(MPL.login_link)
 
 
 if __name__ == "__main__":

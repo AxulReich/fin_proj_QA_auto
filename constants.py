@@ -2,6 +2,7 @@
 
 # BASE_URL = getenv('BASE_URL',"http://selenium1py.pythonanywhere.com/")
 BASE_URL = "http://selenium1py.pythonanywhere.com/"
+LOGIN_LINK_ID = "id='login_link'"
 
 IMPLICIT_WAIT = 2
 EXPLICIT_WAIT = 4

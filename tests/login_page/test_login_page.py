@@ -3,6 +3,11 @@ import pytest
 
 
 class TestLoginPage():
+    def test_login_link_exist(self, browser):
+        lp = LoginPage(driver=browser)
+        lp.open()
+        assert lp.login_link_exist(), 'login link is not presented'
+
     @pytest.mark.parametrize(
         'test_email, pwd', [
             pytest.param('free', 'xxxXXX1234', id='free email'),
