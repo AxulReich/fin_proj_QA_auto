@@ -1,6 +1,7 @@
 from page_objects.base_page import BasePage
 from page_objects.login_page_locators import LoginPageLocators as LPL
 import allure
+import time
 
 
 class LoginPage(BasePage):

@@ -68,8 +68,7 @@ class BasePage():
     def wait_until_element_invisible(self, locator: tuple, timeout=EXPLICIT_WAIT):
         try:
             WebDriverWait(self._driver, timeout).until(
-                EC.invisibility_of_element_located(locator),
-                "Element with locator {1}: {2} still visible".format(*locator))
+                EC.invisibility_of_element_located(locator))
         except TimeoutException as e:
             raise AssertionError(e)
 
@@ -104,5 +103,6 @@ if __name__ == "__main__":
     browser = webdriver.Chrome()
     bp = BasePage(driver=browser)
     bp.open()
-    print(bp.is_element_present((By.CSS_SELECTOR, "#login_link")))
+    bp.find_element((By.CSS_SELECTOR, 'h3>a[href="/en-gb/catalogue/the-age-of-the-pussyfoot_89/"]')).click()
+    print(bp.wait_until_element_invisible((By.CSS_SELECTOR, 'h3>a[href="/en-gb/catalogue/the-age-of-the-pussyfoot_89/"]')))
 

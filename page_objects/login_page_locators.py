@@ -13,6 +13,6 @@ class LoginPageLocators:
     registration_email_form = (By.ID, "id_registration-email")
     registration_password_form = (By.ID, "id_registration-password1")
     registration_password_confirm_form = (By.ID, "id_registration-password2")
-    registration_confirm_button = (By.CSS_SELECTOR, "button[name='registration_submit']")
+    registration_confirm_button = (By.CSS_SELECTOR, 'button[name="registration_submit"]')
 
     success_registration_alert = (By.CSS_SELECTOR, "div.alert.alert-success.fade.in")

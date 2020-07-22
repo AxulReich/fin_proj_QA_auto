@@ -55,12 +55,13 @@ def browser(request):
 def test_email(request):
     try:
         params = request.param
-        if param == 'free':
+        if params == 'free':
             return Faker().ascii_free_email()
-        elif param == 'company':
+        elif params == 'company':
             return Faker().ascii_company_email()
         else:
-            Logger.warning(f'incorrect request param: {params}')
-            return Faker().email()
+            raise NotImplementedError(f'incorrect request param: {params}')
+            # Logger.warning(f'incorrect request param: {params}')
+            # return Faker().email()
     except AttributeError:
         return Faker().email()
