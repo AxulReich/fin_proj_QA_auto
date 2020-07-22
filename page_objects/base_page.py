@@ -17,26 +17,26 @@ class BasePage():
     _base_url = BASE_URL
     _page_path = None
 
-    def __init__(self, browser: WebDriver):
+    def __init__(self, driver: WebDriver):
         """
         :param browser: from conftest.py
         """
-        self._browser = browser
+        self._driver = driver
         # self.url = url
         # self.browser.implicitly_wait(timeout)
 
     @property
     def url(self):
-        return self._browser.current_url
+        return self._driver.current_url
 
     @property
     def source(self):
-        return self._browser.page_source
+        return self._driver.page_source
 
     def open(self):
         url = urljoin(self._base_url, self._page_path)
         with allure.step(f'open {url}'):
-            self._browser.get(url)
+            self._driver.get(url)
         # self._browser.get(self.url)
 
     def is_element_present(self, locator: tuple) -> bool:
@@ -47,7 +47,7 @@ class BasePage():
         :return: True / False
         """
         try:
-            self._browser.find_element(*locator)
+            self._driver.find_element(*locator)
         except NoSuchElementException:
             return False
         return True
@@ -60,14 +60,14 @@ class BasePage():
         :return: object selenium WebElement
         """
         try:
-            element = self._browser.find_element(*locator)
+            element = self._driver.find_element(*locator)
             return element
         except NoSuchElementException:
             raise AssertionError(f'Element with {locator} is not presented!')
 
     def wait_until_element_invisible(self, locator: tuple, timeout=EXPLICIT_WAIT):
         try:
-            WebDriverWait(self._browser, timeout).until(
+            WebDriverWait(self._driver, timeout).until(
                 EC.invisibility_of_element_located(locator),
                 "Element with locator {1}: {2} still visible".format(*locator))
         except TimeoutException as e:
@@ -81,7 +81,7 @@ class BasePage():
         :return:
         """
         try:
-            WebDriverWait(self._browser, timeout).until(
+            WebDriverWait(self._driver, timeout).until(
                 EC.presence_of_element_located(locator))
         except TimeoutException:
             return True
@@ -90,9 +90,17 @@ class BasePage():
 
     def is_disappeared(self,  locator: tuple) -> bool:
         try:
-            WebDriverWait(self._browser, EXPLICIT_WAIT, 1, TimeoutException). \
+            WebDriverWait(self._driver, EXPLICIT_WAIT, 1, TimeoutException). \
                 until_not(EC.presence_of_element_located(locator))
         except TimeoutException:
             return False
 
         return True
+
+
+if __name__ == "__main__":
+    from selenium import webdriver
+    browser = webdriver.Chrome()
+    bp = BasePage(driver=browser)
+    bp.open()
+
