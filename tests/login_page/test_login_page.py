@@ -13,6 +13,7 @@ class TestLoginPage():
         lp = LoginPage(driver=browser)
         lp.open()
         lp.registration(test_email, pwd, pwd)
-        assert True
+
+
 
 
