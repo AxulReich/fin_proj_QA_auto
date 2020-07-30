@@ -4,7 +4,7 @@ from selenium.webdriver.common.by import By
 class LoginPageLocators:
     login_password_reset_link = (By.PARTIAL_LINK_TEXT, "/password-reset/")
 
-    # login_form = (By.CSS_SELECTOR, "div.login_form")
+    login_form = (By.CSS_SELECTOR, "div.login_form")
     login_email_address_form = (By.ID, "id_login-username")
     login_password_form = (By.ID, "id_login-password")
     login_confirm_button = (By.CSS_SELECTOR, "button[name='login_submit']")

@@ -9,43 +9,42 @@ from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
 from constants import BASE_URL, EXPLICIT_WAIT
-from page_objects.main_page_locators import MainPageLocators as MPL
 
 Logger = getLogger(__name__)
 
 
-class BasePage():
+class BasePage:
     _base_url = BASE_URL
-    _page_path = None
 
-    def __init__(self, driver: WebDriver):
+    # _page_path = None
+
+    def __init__(self, driver: WebDriver, page_path=None):
         """
         :param driver: from conftest.py
         """
         self._driver = driver
-        # self.url = url
-        # self.browser.implicitly_wait(timeout)
+        self._page_path = page_path
 
     @property
-    def url(self):
+    def url(self) -> str:
         return self._driver.current_url
 
     @property
-    def source(self):
-        return self._driver.page_source
+    def get_language(self) -> str:
+        return self.url.split('/')[3]
+
+    @property
+    def get_current_page_path(self):
+        return self.url.split('/')[4:]
+
+    # @classmethod
+    # def create_from_current_page(cls):
+
 
     def open(self):
         url = urljoin(self._base_url, self._page_path)
         with allure.step(f'open {url}'):
             self._driver.get(url)
-        # self._browser.get(self.url)
-
-    def login_link_exist(self) -> bool:
-        """
-        because every page have login or register link
-        :return:
-        """
-        return self.is_element_present(*MPL.login_link)
 
     def is_element_present(self, locator: tuple) -> bool:
         """
@@ -54,7 +53,7 @@ class BasePage():
                         xpath - (By.XPATH, xpath locator)
         :return: True / False
         """
-        return self._driver.find_elements(*locator) > 0
+        return len(self._driver.find_elements(*locator)) > 0
 
     def find_element(self, locator: tuple) -> WebElement:
         """
@@ -91,7 +90,7 @@ class BasePage():
 
         return False
 
-    def is_disappeared(self,  locator: tuple) -> bool:
+    def is_disappeared(self, locator: tuple) -> bool:
         try:
             WebDriverWait(self._driver, EXPLICIT_WAIT, 1, TimeoutException). \
                 until_not(EC.presence_of_element_located(locator))
@@ -104,9 +103,11 @@ class BasePage():
 if __name__ == "__main__":
     from selenium import webdriver
     from selenium.webdriver.common.by import By
+
     browser = webdriver.Chrome()
     bp = BasePage(driver=browser)
     bp.open()
-    bp.find_element((By.CSS_SELECTOR, 'h3>a[href="/en-gb/catalogue/the-age-of-the-pussyfoot_89/"]')).click()
-    print(bp.wait_until_element_invisible((By.CSS_SELECTOR, 'h3>a[href="/en-gb/catalogue/the-age-of-the-pussyfoot_89/"]')))
-
+    print(bp.get_language)
+    print(bp.get_current_page_path)
+    # bp.find_element((By.CSS_SELECTOR, 'h3>a[href="/en-gb/catalogue/the-age-of-the-pussyfoot_89/"]')).click()
+    # print(bp.wait_until_element_invisible((By.CSS_SELECTOR, 'h3>a[href="/en-gb/catalogue/the-age-of-the-pussyfoot_89/"]')))
